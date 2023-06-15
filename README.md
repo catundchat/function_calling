@@ -4,6 +4,17 @@
 
 WeChat 小程序：AI 爱家
 
+# 目录
+
+- [函数调用功能实现](#函数调用功能实现)
+  - [简单用例](#简单用例)
+  - [一般步骤](#一般步骤)
+  - [具体步骤](#具体步骤)
+- [LangChain 对 Function calling 的支持](#LangChain-对-Function-calling-的支持)
+- [网页搜索和数据库搜索](#网页搜索和数据库搜索)
+- [参考文献](#参考文献)
+
+
 ## 函数调用功能实现
 
 Function calling 可使我们能够利用模型的 NLU(Natural Language Understanding) 能力，有效地将人类语言转化为结构化数据或我们代码中的具体函数调用。这种能力在 AI 爱家小程序的各种场景中都很有用，从创建可以与其他 API 互动的聊天机器人，到文本后处理任务和从自然语言输入中提取结构化信息，都可以有效的提高回复质量
@@ -80,13 +91,90 @@ functions = [format_tool_to_openai_function(t) for t in tools]
 
 [2023.6.15] LangChain 再度更新 Function Calling 支持，使用版本`langchain==0.0.200`
 
-`code/demo3.ipynb` 
+`code/demo3.ipynb`中展示了LangChain结合OpenAI函数能力的例子，提前准备好了一些音乐商店资料，存储在数据库文件`data/chinook.db`
 
-接下来的调用代码中给出了一个例子，展示了如何使用OpenAI的函数调用功能。这个例子使用了一个名为aiaj(AI爱家)的代理，它可以根据用户的输入调用不同的工具，并生成答案。其中定义了三个parameters,分别是
+此示例创建了一个名为aiaj(AI爱家)的代理，它可以根据用户的输入调用不同的工具，并生成答案。其中定义了三个functions,分别是
 - Search: 使用SerpAPIWrapper的run方法，用于根据特定查询执行网络搜索
 - Calculator: 使用LLMMathChain的run方法，可以执行简单的数学计算，不包括计算微积分和解一元二次方程
-- FooBar-DB: 使用SQLDatabaseChain的run方法，可以从SQL数据库中获取信息
-使用这些工具和 OpenAI 模型初始化了一个名为 aiaj 的代理。当 aiaj.run 被调用时，它会根据用户输入的内容，调用适当的工具并生成答案。
+- FooBar-DB: 使用SQLDatabaseChain的run方法，可以从SQL数据库中获取信息（需要提前获得 Serp 数据库 API，并准备好数据库文件）
+
+<details>
+ <summary>Agent defination</summary>
+```
+llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613",openai_api_key="YOUROPENAIKEY")
+search = SerpAPIWrapper(serpapi_api_key='YOURSERPAPIKEY')
+
+llm_math_chain = LLMMathChain.from_llm(llm=llm, verbose=True)
+db = SQLDatabase.from_uri("sqlite:///D:\\mydocument\\juxue\\OpenAI_use\\chinook.db")
+db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+
+tools = [
+    Tool(
+        name = "Search",
+        func=search.run,
+        description="useful for when you need to answer questions about current events. You should ask targeted questions"
+    ),
+    Tool(
+        name="Calculator",
+        func=llm_math_chain.run,
+        description="useful for when you need to answer questions about math"
+    ),
+    Tool(
+        name="FooBar-DB",
+        func=db_chain.run,
+        description="useful for when you need to answer questions about FooBar. Input should be in the form of a question containing full context"
+    )
+]
+aiaj = initialize_agent(tools, llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=True)
+```
+</details>
+
+使用这些工具和 OpenAI 模型初始化了一个名为 aiaj 的代理。当 aiaj.run 被调用时，它会根据用户输入的内容，调用适当的工具使用网络搜索，计算器或是 FooBar database，或者不调用任何函数生成回复。
+
+<details>
+ <summary>1. Search网络搜索</summary>
+ 
+ 搜索引擎选择 `pip install google-search-results`
+ 
+ 询问天气
+ ![fc_weather](img/fc_weather.JPG)
+ 
+ 询问周杰伦
+ ![fc_jaychou](img/fc_jaychou.JPG)
+ 
+ 询问武汉空轨
+ ![fc_train](img/fc_train.JPG)
+ 
+ 询问电影上映
+ ![fc_transformers](img/fc_transformers.JPG)
+ </details>
+
+<details>
+ <summary>2. Calculator计算器</summary>
+ 询问数量计算
+ ![fc_calculator](img/fc_calculator.JPG)
+ 
+ </details>
+ 
+ <details>
+ <summary>3. FooBar数据库搜索</summary>
+ 
+ 询问数据库中最多作品的艺术家
+ ![fc_artist](img/fc_artist.JPG)
+ 
+ 询问数据库中购买最多的作品
+ ![fc_song](img/fc_song.JPG)
+ </details>
+ 
+ <details>
+ <summary>4. 不调用函数</summary>
+ 
+ 询问亲密关系种类
+ ![fc_relationship](img/fc_relationship.JPG)
+ 
+ 询问心理学家和精神病学家区别
+ ![fc_psycho](img/fc_psycho.JPG)
+ </details>
 
 ## 参考文献
 
