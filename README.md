@@ -100,7 +100,7 @@ functions = [format_tool_to_openai_function(t) for t in tools]
 
 <details>
  <summary>Agent defination</summary>
-```
+
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613",openai_api_key="YOUROPENAIKEY")
 search = SerpAPIWrapper(serpapi_api_key='YOURSERPAPIKEY')
 
@@ -126,13 +126,13 @@ tools = [
     )
 ]
 aiaj = initialize_agent(tools, llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=True)
-```
+
 </details>
 
 使用这些工具和 OpenAI 模型初始化了一个名为 aiaj 的代理。当 aiaj.run 被调用时，它会根据用户输入的内容，调用适当的工具使用网络搜索，计算器或是 FooBar database，或者不调用任何函数生成回复。
 
 <details>
- <summary>1. Search网络搜索</summary>
+ <summary>1. Search 网络搜索</summary>
  
  搜索引擎选择 `pip install google-search-results`
  
@@ -150,14 +150,14 @@ aiaj = initialize_agent(tools, llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=Tr
  </details>
 
 <details>
- <summary>2. Calculator计算器</summary>
+ <summary>2. Calculator 计算器</summary>
  询问数量计算
  ![fc_calculator](img/fc_calculator.JPG)
  
  </details>
  
  <details>
- <summary>3. FooBar数据库搜索</summary>
+ <summary>3. FooBar 数据库搜索</summary>
  
  询问数据库中最多作品的艺术家
  ![fc_artist](img/fc_artist.JPG)
