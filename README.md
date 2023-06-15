@@ -1,10 +1,10 @@
 # Function_Calling
 
-函数调用 | 网页搜索 | 知识库搜索  
+Function calling 可使我们能够利用模型的 NLU(Natural Language Understanding) 能力，有效地将人类语言转化为结构化数据或我们代码中的具体函数调用。这种能力在 AI 爱家小程序的各种场景中都很有用，从创建可以与其他 API 互动的聊天机器人，到文本后处理任务和从自然语言输入中提取结构化信息，都可以有效的提高回复质量。
 
-微信小程序：AI爱家
+函数调用 | 网页搜索 | 知识库搜索
 
-Function calling 可使我们能够利用模型的 NLU(Natural Language Understanding) 能力，有效地将人类语言转化为结构化数据或我们代码中的具体函数调用。这种能力在 AI 爱家小程序的各种场景中都很有用，从创建可以与其他 API 互动的聊天机器人，到自动化任务和从自然语言输入中提取结构化信息
+WeChat 小程序：AI 爱家
 
 ## 函数调用功能实现
 
@@ -13,6 +13,14 @@ Function calling 可使我们能够利用模型的 NLU(Natural Language Understa
 1. 首先定义了三个函数`get_apple_yield`, `get_current_data`, `get_history_date
 2. 设置函数的各项参数: `name, description, parameters, required`
 3. function 模块中一次可以定义多个函数，但是`gpt-3.5-turbo-16k-0613`会自主决定调用哪一个函数或者不调用函数使用模型能力回答
+```
+ "message": {
+        "content": null,
+        "function_call": {
+          "arguments": "{\n\"time\": \"now\"\n}",
+          "name": "get_current_time"
+        }
+```
 
 `code/demo2.ipynb`文件展示了 function calling 的一般步骤
 
