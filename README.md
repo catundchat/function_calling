@@ -1,5 +1,12 @@
 # Function_calling
-2023.6.13 OpenAI update function calling and here is a function calling demo
+
+函数调用功能实现|网页搜索|知识库搜索
+
+## 函数调用功能实现
+
+`code/demo1.ipynb`文件展示了一个简单用例
+
+demo
 
 ## 示例
 ### Demo1
@@ -15,3 +22,9 @@
 - FooBar-DB: 使用SQLDatabaseChain的run方法，可以从SQL数据库中获取信息
 
 使用这些工具和OpenAI模型初始化了一个名为mrkl的代理。当mrkl.run被调用时，它会根据用户输入的内容，调用适当的工具并生成答案。
+
+## 参考文献
+1. [Function calling and other API updates](https://openai.com/blog/function-calling-and-other-api-updates)
+2. [OpenAI function calling documentation](https://platform.openai.com/docs/guides/gpt/function-calling)
+3. [Function Calling via ChatGPT API - First Look With LangChain](https://www.youtube.com/watch?v=0-zlUy7VUjg&t=2s)
+4. [LangChain official Twitter Media](https://twitter.com/LangChainAI/media) 
