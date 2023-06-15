@@ -100,33 +100,8 @@ functions = [format_tool_to_openai_function(t) for t in tools]
 
 <details>
  <summary>Agent defination</summary>
-
-llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613",openai_api_key="YOUROPENAIKEY")
-search = SerpAPIWrapper(serpapi_api_key='YOURSERPAPIKEY')
-
-llm_math_chain = LLMMathChain.from_llm(llm=llm, verbose=True)
-db = SQLDatabase.from_uri("sqlite:///D:\\mydocument\\juxue\\OpenAI_use\\chinook.db")
-db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
-
-tools = [
-    Tool(
-        name = "Search",
-        func=search.run,
-        description="useful for when you need to answer questions about current events. You should ask targeted questions"
-    ),
-    Tool(
-        name="Calculator",
-        func=llm_math_chain.run,
-        description="useful for when you need to answer questions about math"
-    ),
-    Tool(
-        name="FooBar-DB",
-        func=db_chain.run,
-        description="useful for when you need to answer questions about FooBar. Input should be in the form of a question containing full context"
-    )
-]
-aiaj = initialize_agent(tools, llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=True)
-
+  
+  ![fc_setting](img/fc_setting.JPG)
 </details>
 
 使用这些工具和 OpenAI 模型初始化了一个名为 aiaj 的代理。当 aiaj.run 被调用时，它会根据用户输入的内容，调用适当的工具使用网络搜索，计算器或是 FooBar database，或者不调用任何函数生成回复。
@@ -151,6 +126,7 @@ aiaj = initialize_agent(tools, llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=Tr
 
 <details>
  <summary>2. Calculator 计算器</summary>
+  
  询问数量计算
  ![fc_calculator](img/fc_calculator.JPG)
  
