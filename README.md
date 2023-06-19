@@ -106,6 +106,8 @@ functions = [format_tool_to_openai_function(t) for t in tools]
 
 使用这些工具和 OpenAI 模型初始化了一个名为 aiaj 的代理。当 aiaj.run 被调用时，它会根据用户输入的内容，调用适当的工具使用网络搜索，计算器或是 FooBar database，或者不调用任何函数生成回复。
 
+模型给出的回答示例如下：
+
 <details>
  <summary>1. Search 网络搜索</summary>
  
